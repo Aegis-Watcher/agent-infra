@@ -17,7 +17,7 @@ SERVICE_FILE="/etc/systemd/system/aegis-watcher-metrics-agent.service"
 
 # Download or build the binary
 echo "Downloading Metrics Agent binary..."
-curl -L -o "$BINARY_PATH" https://github.com/Aegis-Watcher/agent-infra/releases/latest/agent-infra
+curl -L -o "$BINARY_PATH" $(curl -s https://api.github.com/repos/Aegis-Watcher/agent-infra/releases/latest | grep -oP '"browser_download_url": "\K(.*agent-infra)"' | tr -d '"')
 chmod +x "$BINARY_PATH"
 
 # Prompt for environment variables
