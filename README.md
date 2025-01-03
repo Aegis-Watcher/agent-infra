@@ -1,6 +1,6 @@
-# Metrics Agent
+# Agent Infra
 
-The Metrics Agent is a lightweight tool designed to collect metrics for CPU, memory, and disk usage and send them to a configured endpoint. This document provides instructions for installing and configuring the agent, including options for using Docker or running it directly as a system service.
+The Agent Infra is a lightweight tool designed to collect metrics for CPU, memory, and disk usage and send them to a configured endpoint. This document provides instructions for installing and configuring the agent, including options for using Docker or running it directly as a system service.
 
 ---
 
@@ -40,7 +40,7 @@ The Metrics Agent is a lightweight tool designed to collect metrics for CPU, mem
    docker run -d \
      -e AGENT_UUID="your-agent-uuid" \
      -e AGENT_SECRET="your-agent-secret" \
-     your-repo/metrics-agent:latest
+     public.ecr.aws/d4g3e8d6/agent/infra:latest
    ```
 
    Replace `your-agent-uuid`, `your-agent-secret` with appropriate values.
@@ -60,22 +60,22 @@ The Metrics Agent is a lightweight tool designed to collect metrics for CPU, mem
    Download the setup script that automates the installation process:
 
    ```bash
-   curl -O https://your-repo.com/scripts/install-metrics-agent.sh
-   chmod +x install-metrics-agent.sh
-   ./install-metrics-agent.sh
+   curl -O https://github.com/Aegis-Watcher/agent-infra/scripts/install.sh
+   chmod +x install.sh
+   ./install.sh
    ```
 
    The script performs the following actions:
    - Builds or downloads the Metrics Agent binary.
    - Places the binary in `/usr/local/bin/`.
-   - Prompts the user to input `AGENT_UUID`, `AGENT_SECRET`, and `ENV`.
-   - Creates the environment configuration file (`/etc/metrics-agent.env`).
+   - Prompts the user to input `AGENT_UUID`, `AGENT_SECRET`.
+   - Creates the environment configuration file (`/etc/aegis-watcher-metrics-agent.env`).
    - Sets up and starts a systemd service for the agent.
 
 2. **Verify the Service is Running:**
 
    ```bash
-   sudo systemctl status metrics-agent
+   sudo systemctl status aegis-watcher-metrics-agent
    ```
 
 ---
@@ -88,7 +88,6 @@ The agent requires the following environment variables for configuration:
 
 - **`AGENT_UUID`** (Required): Unique identifier for the agent.
 - **`AGENT_SECRET`** (Required): Secret key for agent authentication.
-- **`ENV`** (Optional): Environment identifier (e.g., `production`, `staging`, `development`).
 
 ---
 
@@ -105,7 +104,7 @@ To view logs:
 
 - **System Service:**
   ```bash
-  journalctl -u metrics-agent -f
+  journalctl -u aegis-watcher-metrics-agent -f
   ```
 
 ### Testing
@@ -133,7 +132,7 @@ To verify the agent is collecting and sending metrics correctly, check your moni
 3. Optionally, remove the image:
 
    ```bash
-   docker rmi your-repo/metrics-agent
+   docker rmi public.ecr.aws/aegis-watcher/agent/infra
    ```
 
 ### System Service
@@ -148,9 +147,9 @@ To verify the agent is collecting and sending metrics correctly, check your moni
 2. Remove the binary and configuration files:
 
    ```bash
-   sudo rm /usr/local/bin/metrics-agent
-   sudo rm /etc/metrics-agent.env
-   sudo rm /etc/systemd/system/metrics-agent.service
+   sudo rm /usr/local/bin/agent-infra
+   sudo rm /etc/aegis-watcher-metrics-agent.env
+   sudo rm /etc/systemd/system/aegis-watcher-metrics-agent.service
    ```
 
 3. Reload systemd:
@@ -167,7 +166,7 @@ To verify the agent is collecting and sending metrics correctly, check your moni
   - Ensure the environment variables are correctly set in `/etc/metrics-agent.env`.
   - Check logs for detailed error messages.
     ```bash
-    journalctl -u metrics-agent
+    journalctl -u aegis-watcher-metrics-agent
     ```
 
 - **Metrics Not Received:**
