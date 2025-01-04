@@ -60,7 +60,7 @@ The Agent Infra is a lightweight tool designed to collect metrics for CPU, memor
    Download the setup script that automates the installation process:
 
    ```bash
-   curl -O https://github.com/Aegis-Watcher/agent-infra/scripts/install.sh
+   curl -o install.sh https://raw.githubusercontent.com/Aegis-Watcher/agent-infra/main/scripts/install.sh
    chmod +x install.sh
    ./install.sh
    ```
