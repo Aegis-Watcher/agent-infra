@@ -10,6 +10,19 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+AGENT_UUID=$1
+AGENT_SECRET=$2
+
+if [ -z "$AGENT_UUID" ]; then
+  echo "Please provide the Agent UUID as the first argument."
+  exit 1
+fi
+
+if [ -z "$AGENT_SECRET" ]; then
+  echo "Please provide the Agent Secret as the second argument."
+  exit 1
+fi
+
 # Define variables
 BINARY_PATH="/usr/local/bin/aegis-watcher-metrics-agent"
 ENV_FILE="/etc/aegis-watcher-metrics-agent.env"
@@ -19,11 +32,6 @@ SERVICE_FILE="/etc/systemd/system/aegis-watcher-metrics-agent.service"
 echo "Downloading Metrics Agent binary..."
 curl -L -o "$BINARY_PATH" $(curl -s https://api.github.com/repos/Aegis-Watcher/agent-infra/releases/latest | grep -oP '"browser_download_url": "\K(.*agent-infra)"' | tr -d '"')
 chmod +x "$BINARY_PATH"
-
-# Prompt for environment variables
-echo "Please enter the following configuration details:"
-read -p "Agent UUID: " AGENT_UUID
-read -p "Agent Secret: " AGENT_SECRET
 
 # Create environment file
 echo "Creating environment configuration file..."
