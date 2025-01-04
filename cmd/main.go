@@ -8,6 +8,7 @@ import (
 
 	c "agent-infra/config"
 	"agent-infra/internal/metrics"
+	"agent-infra/internal/utils"
 )
 
 func main() {
@@ -25,6 +26,12 @@ func main() {
 	} else {
 		fmt.Println("Running in development environment")
 		serverURL = "http://localhost:8080/api/v1/metrics"
+	}
+
+	instanceID := os.Getenv("AEGIS_WATCHER_METRICS_AGENT_INSTANCE_ID")
+	if instanceID == "" {
+		// generate a instanceID if not provided in the environment variables
+		instanceID = utils.GenerateInstanceID()
 	}
 
 	// Initialize configuration (e.g., collection intervals)

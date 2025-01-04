@@ -2,7 +2,10 @@ module agent-infra
 
 go 1.23.4
 
-require github.com/shirou/gopsutil v3.21.11+incompatible
+require (
+	github.com/google/uuid v1.6.0
+	github.com/shirou/gopsutil v3.21.11+incompatible
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
