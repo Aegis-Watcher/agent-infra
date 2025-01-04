@@ -31,6 +31,7 @@ func main() {
 	config := c.Config{
 		ServerURL:          serverURL,
 		CollectionInterval: 10 * time.Second, // Collect every 10 seconds
+		InstanceID:         os.Getenv("AEGIS_WATCHER_METRICS_AGENT_INSTANCE_ID"),
 	}
 	fmt.Println("config: ", config)
 

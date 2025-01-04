@@ -51,10 +51,11 @@ func (a *Agent) collectAndSend() error {
 
 	// Prepare payload
 	payload := map[string]interface{}{
-		"cpu":    cpu,
-		"memory": mem,
-		"disk":   disk,
-		"time":   time.Now().UTC(),
+		"cpu":         cpu,
+		"memory":      mem,
+		"disk":        disk,
+		"time":        time.Now().UTC(),
+		"instance_id": a.config.InstanceID,
 	}
 
 	// Compress payload

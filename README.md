@@ -60,7 +60,7 @@ The Agent Infra is a lightweight tool designed to collect metrics for CPU, memor
    Download the setup script that automates the installation process:
 
    ```bash
-   curl -o install.sh https://raw.githubusercontent.com/Aegis-Watcher/agent-infra/main/scripts/install.sh
+   curl -o install.sh https://raw.githubusercontent.com/Aegis-Watcher/agent-infra/refs/heads/main/scripts/install.sh
    chmod +x install.sh
    ./install.sh
    ```
@@ -140,14 +140,14 @@ To verify the agent is collecting and sending metrics correctly, check your moni
 1. Stop and disable the service:
 
    ```bash
-   sudo systemctl stop metrics-agent
-   sudo systemctl disable metrics-agent
+   sudo systemctl stop aegis-watcher-metrics-agent
+   sudo systemctl disable aegis-watcher-metrics-agent
    ```
 
 2. Remove the binary and configuration files:
 
    ```bash
-   sudo rm /usr/local/bin/agent-infra
+   sudo rm /usr/local/bin/aegis-watcher-metrics-agent
    sudo rm /etc/aegis-watcher-metrics-agent.env
    sudo rm /etc/systemd/system/aegis-watcher-metrics-agent.service
    ```
