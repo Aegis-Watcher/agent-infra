@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 )
 
+// SendMetrics sends compressed metrics data to the given URL
 func SendMetrics(url string, compressedData []byte) error {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(compressedData))
 	if err != nil {
-		return err
+		return fmt.Errorf("error creating request: %w", err)
 	}
 
 	agentToken := AgentToken()
@@ -23,16 +25,20 @@ func SendMetrics(url string, compressedData []byte) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("error sending request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to send metrics, status code: %d", resp.StatusCode)
+		// Read the response body for detailed error message
+		body, readErr := ioutil.ReadAll(resp.Body)
+		if readErr != nil {
+			return fmt.Errorf("failed to send metrics, status code: %d, error reading response: %v", resp.StatusCode, readErr)
+		}
+		return fmt.Errorf("failed to send metrics, status code: %d, error message: %s", resp.StatusCode, string(body))
 	}
 
 	fmt.Println("Metrics sent successfully")
-
 	return nil
 }
 

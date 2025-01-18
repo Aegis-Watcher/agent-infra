@@ -49,6 +49,16 @@ func (a *Agent) collectAndSend() error {
 		return err
 	}
 
+	ip, err := GetIPAddress()
+	if err != nil {
+		return err
+	}
+
+	hostname, err := GetHostname()
+	if err != nil {
+		return err
+	}
+
 	// Prepare payload
 	payload := map[string]interface{}{
 		"cpu":         cpu,
@@ -56,6 +66,8 @@ func (a *Agent) collectAndSend() error {
 		"disk":        disk,
 		"time":        time.Now().UTC(),
 		"instance_id": a.config.InstanceID,
+		"ip":          ip,
+		"hostname":    hostname,
 	}
 
 	// Compress payload
